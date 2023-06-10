@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="ru.net.serbis.share" >
+
+    <uses-permission android:name="android.permission.GET_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.MANAGE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.USE_CREDENTIALS"/>
+    <uses-permission android:name="android.permission.AUTHENTICATE_ACCOUNTS"/>
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
+
+    <permission android:name="ru.net.serbis.share.BIND_FILES_SERVICE"/>
+    <uses-permission android:name="ru.net.serbis.share.BIND_FILES_SERVICE"/>
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/app"
+        android:label="@string/app"
+		android:resizeableActivity = "true">
+        <activity
+            android:name=".activity.Accounts"
+            android:label="@string/app" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/>
+                <category android:name="android.intent.category.LAUNCHER"/>
+            </intent-filter>
+        </activity>
+
+        <activity android:name=".activity.Login"/>
+        <activity android:name=".activity.Browser"/>
+        <activity android:name=".activity.LocalBrowser"/>
+
+        <service
+            android:name=".service.AccountsService"
+            android:exported="false">
+
+            <intent-filter>
+                <action android:name="android.accounts.AccountAuthenticator"/>
+            </intent-filter>
+
+            <meta-data
+                android:name="android.accounts.AccountAuthenticator"
+                android:resource="@xml/authenticator"/>
+
+        </service>
+        <service
+            android:name=".service.FilesService"
+            android:exported="true"
+            android:permission="ru.net.serbis.share.BIND_FILES_SERVICE"/>
+    </application>
+
+</manifest>

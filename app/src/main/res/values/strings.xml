@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app">SBShareFiles</string>
+
+    <string name="action_add">Add</string>
+    <string name="action_move">Move</string>
+	<string name="action_delete">Delete</string>
+    <string name="action_ok">OK</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_logout">Logout</string>
+	<string name="action_download">Download</string>
+    <string name="action_upload">Upload</string>
+    <string name="action_select_path">Select Path</string>
+    <string name="action_get_files_list">Get Files List</string>
+    <string name="action_get_file">Get File</string>
+    <string name="action_remove_file">Remove File</string>
+	<string name="action_ping">Ping</string>
+
+    <string name="login_host">Host</string>
+    <string name="login_user">User</string>
+    <string name="login_password">Password</string>
+    <string name="login">Login</string>
+
+    <string name="mess_are_you_sure">Are you sure?</string>
+    <string name="mess_delete_account">Delete Account</string>
+
+    <string name="error_account_already_exists">Account Already Exists</string>
+    <string name="error_network_is_not_available">Network Is Not Available</string>
+    <string name="mess_select_value">Select value</string>
+	<string name="mess_link">Link</string>
+
+    <plurals name="num_files">
+        <item quantity="one">file</item>
+        <item quantity="other">files</item>
+    </plurals>
+
+    <plurals name="num_folders">
+        <item quantity="one">folder</item>
+        <item quantity="other">folders</item>
+    </plurals>
+</resources>

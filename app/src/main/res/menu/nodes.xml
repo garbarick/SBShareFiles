@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item
+        android:id="@+id/logout"
+        android:title="@string/action_logout"/>
+    <item
+        android:id="@+id/upload"
+        android:title="@string/action_upload"/>
+    <item
+        android:id="@+id/get_files_list"
+        android:title="@string/action_get_files_list"/>
+</menu>
