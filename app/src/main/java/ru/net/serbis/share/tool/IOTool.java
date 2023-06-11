@@ -22,7 +22,7 @@ public class IOTool
     {
         try
         {
-            byte[] buf = new byte[1024];
+            byte[] buf = new byte[10240];
             long bytes = 0;
             int len;
             while ((len = is.read(buf)) > 0)
