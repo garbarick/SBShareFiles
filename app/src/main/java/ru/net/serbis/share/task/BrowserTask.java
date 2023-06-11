@@ -6,13 +6,14 @@ import jcifs.smb.*;
 import ru.net.serbis.share.*;
 import ru.net.serbis.share.tool.*;
 import ru.net.serbis.share.data.*;
+import ru.net.serbis.share.data.Error;
 
 public class BrowserTask extends AsyncTask<String, Integer, List<ShareFile>>
 {
     private BrowserCallback callback;
     private Smb smb;
     private ShareFile dir;
-    private String error;
+    private Error error;
 
     public BrowserTask(BrowserCallback callback, Smb smb)
     {
@@ -34,7 +35,7 @@ public class BrowserTask extends AsyncTask<String, Integer, List<ShareFile>>
         catch(Throwable e)
         {
             Log.error(this, e);
-            error = e.getMessage();
+            error = new Error(Constants.ERROR_BROWSE, e.getMessage());
             return null;
         }
         finally
@@ -52,12 +53,14 @@ public class BrowserTask extends AsyncTask<String, Integer, List<ShareFile>>
     @Override
     protected void onPostExecute(List<ShareFile> children)
     {
-        if (error != null)
+        if (error == null)
         {
-            callback.onError(Constants.ERROR_BROWSE, error);
-            return;
+            callback.onChildren(dir, children);
         }
-        callback.onChildren(dir, children);
+        else
+        {
+            callback.onError(error);
+        }
     }
     
     public List<ShareFile> getChildren(SmbFile file) throws Exception

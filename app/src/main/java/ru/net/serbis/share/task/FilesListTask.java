@@ -2,15 +2,17 @@ package ru.net.serbis.share.task;
 
 import android.os.*;
 import java.io.*;
-import ru.net.serbis.share.*;
-import ru.net.serbis.share.tool.*;
 import jcifs.smb.*;
+import ru.net.serbis.share.*;
+import ru.net.serbis.share.data.*;
+import ru.net.serbis.share.tool.*;
+import ru.net.serbis.share.data.Error;
 
 public class FilesListTask extends AsyncTask<String, Integer, File>
 {
     private BrowserCallback callback;
     private Smb smb;
-    private String error;
+    private Error error;
     private long allFiles;
     private long files;
 
@@ -36,7 +38,7 @@ public class FilesListTask extends AsyncTask<String, Integer, File>
         catch(Throwable e)
         {
             Log.error(this, e);
-            error = e.getMessage();
+            error = new Error(Constants.ERROR_FILES_LIST, e.getMessage());
             return null;
         }
         finally
@@ -56,7 +58,7 @@ public class FilesListTask extends AsyncTask<String, Integer, File>
     {
         if (error != null)
         {
-            callback.onError(Constants.ERROR_FILES_LIST, error);
+            callback.onError(error);
             return;
         }
         callback.onFilesList(file);

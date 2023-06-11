@@ -11,6 +11,7 @@ import ru.net.serbis.share.adapter.*;
 import ru.net.serbis.share.data.*;
 import ru.net.serbis.share.task.*;
 import ru.net.serbis.share.tool.*;
+import ru.net.serbis.share.data.Error;
 
 public class Browser extends ListActivity<ShareFile> implements BrowserCallback
 {
@@ -135,9 +136,9 @@ public class Browser extends ListActivity<ShareFile> implements BrowserCallback
 	}
 
 	@Override
-	public void onError(int errorCode, String error)
+	public void onError(Error error)
 	{
-        UITool.toast(this, errorCode, error);
+        UITool.toast(this, error);
         UITool.enable(this, R.id.list);
 	}
 

@@ -4,13 +4,15 @@ import android.os.*;
 import java.io.*;
 import jcifs.smb.*;
 import ru.net.serbis.share.*;
+import ru.net.serbis.share.data.*;
 import ru.net.serbis.share.tool.*;
+import ru.net.serbis.share.data.Error;
 
 public class DownloadTask extends AsyncTask<String, Integer, File> implements Progress
 {
     private BrowserCallback callback;
     private Smb smb;
-    private String error;
+    private Error error;
 
     public DownloadTask(BrowserCallback callback, Smb smb)
     {
@@ -27,6 +29,13 @@ public class DownloadTask extends AsyncTask<String, Integer, File> implements Pr
             String path = params[0];
             String targetDir = params[1];
             SmbFile source = smb.getFile(path);
+
+            if (!source.isFile() || !source.exists())
+            {
+                error = new Error(smb, Constants.ERROR_FILE_IS_NOT_FOUND, R.string.error_file_is_not_found);
+                return null;
+            }
+
             File target = new File(targetDir, source.getName());
             download(source, target);
             return target;
@@ -34,7 +43,7 @@ public class DownloadTask extends AsyncTask<String, Integer, File> implements Pr
         catch(Throwable e)
         {
             Log.error(this, e);
-            error = e.getMessage();
+            error = new Error(Constants.ERROR_DOWNLOAD, e.getMessage());
             return null;
         }
         finally
@@ -67,7 +76,7 @@ public class DownloadTask extends AsyncTask<String, Integer, File> implements Pr
     {
         if (error != null)
         {
-            callback.onError(Constants.ERROR_DOWNLOAD, error);
+            callback.onError(error);
             return;
         }
         callback.onDownloadFinish(file);

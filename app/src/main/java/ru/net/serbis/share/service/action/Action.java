@@ -12,6 +12,7 @@ import ru.net.serbis.share.data.*;
 import ru.net.serbis.share.task.*;
 import ru.net.serbis.share.tool.*;
 import ru.net.serbis.share.account.*;
+import ru.net.serbis.share.data.Error;
 
 public class Action implements LoginCallback, BrowserCallback
 {
@@ -50,7 +51,7 @@ public class Action implements LoginCallback, BrowserCallback
 	{
 		if (!NetTool.isNetworkAvailable(context))
 		{
-			sendError(Constants.ERROR_NETWORK_IS_NOT_AVAILABLE, context.getResources().getString(R.string.error_network_is_not_available));
+			sendError(new Error(context, Constants.ERROR_NETWORK_IS_NOT_AVAILABLE, R.string.error_network_is_not_available));
 			return;
 		}
 		AccountManager manager = AccountManager.get(context);
@@ -66,13 +67,13 @@ public class Action implements LoginCallback, BrowserCallback
         sendResult(data);
     }
 
-    protected void sendError(int errorCode, String error)
+    protected void sendError(Error error)
     {
-        UITool.toast(context, errorCode, error);
+        UITool.toast(context, error);
 
         Bundle data = new Bundle();
-        data.putInt(Constants.ERROR_CODE, errorCode);
-        data.putString(Constants.ERROR, error);
+        data.putInt(Constants.ERROR_CODE, error.getCode());
+        data.putString(Constants.ERROR, error.getMessage());
         sendResult(data);
     }
 
@@ -96,9 +97,9 @@ public class Action implements LoginCallback, BrowserCallback
     }
 
     @Override
-    public void onError(int errorCode, String error)
+    public void onError(Error error)
     {
-        sendError(errorCode, error);
+        sendError(error);
     }
 
     @Override

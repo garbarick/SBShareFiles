@@ -2,9 +2,11 @@ package ru.net.serbis.share.task;
 
 import android.os.*;
 import ru.net.serbis.share.*;
+import ru.net.serbis.share.data.*;
 import ru.net.serbis.share.tool.*;
+import ru.net.serbis.share.data.Error;
 
-public class LoginTask extends AsyncTask<String, Void, String>
+public class LoginTask extends AsyncTask<String, Void, Error>
 {
     private LoginCallback callback;
 
@@ -14,7 +16,7 @@ public class LoginTask extends AsyncTask<String, Void, String>
     }
     
     @Override
-    protected String doInBackground(String... params)
+    protected Error doInBackground(String... params)
     {
         try
         {
@@ -26,16 +28,16 @@ public class LoginTask extends AsyncTask<String, Void, String>
         catch (Throwable e)
         {
             Log.error(this, e);
-            return e.getMessage();
+            return new Error(Constants.ERROR_LOGIN, e.getMessage());
         }
     }
 
     @Override
-    protected void onPostExecute(String error)
+    protected void onPostExecute(Error error)
     {
         if (error != null)
         {
-            callback.onError(Constants.ERROR_LOGIN, error);
+            callback.onError(error);
         }
     }
 }

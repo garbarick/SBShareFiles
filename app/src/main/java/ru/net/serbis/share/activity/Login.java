@@ -11,6 +11,7 @@ import ru.net.serbis.share.account.*;
 import ru.net.serbis.share.task.*;
 import ru.net.serbis.share.tool.*;
 import ru.net.serbis.share.data.*;
+import ru.net.serbis.share.data.Error;
 
 public class Login extends AccountAuthenticatorActivity implements LoginCallback
 {
@@ -30,7 +31,7 @@ public class Login extends AccountAuthenticatorActivity implements LoginCallback
         }
         if (!NetTool.isNetworkAvailable(this))
         {
-            onError(Constants.ERROR_NETWORK_IS_NOT_AVAILABLE, getResources().getString(R.string.error_network_is_not_available));
+            onError(new Error(this, Constants.ERROR_NETWORK_IS_NOT_AVAILABLE, R.string.error_network_is_not_available));
 		}
         if (params.account != null)
         {
@@ -114,11 +115,11 @@ public class Login extends AccountAuthenticatorActivity implements LoginCallback
     }
 
     @Override
-    public void onError(int errorCode, String error)
+    public void onError(Error error)
     {
         if (error != null)
         {
-            UITool.toast(this, errorCode, error);
+            UITool.toast(this, error);
         }
         if (create)
         {

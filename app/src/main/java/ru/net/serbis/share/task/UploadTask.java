@@ -4,9 +4,11 @@ import android.os.*;
 import java.io.*;
 import jcifs.smb.*;
 import ru.net.serbis.share.*;
+import ru.net.serbis.share.data.*;
 import ru.net.serbis.share.tool.*;
+import ru.net.serbis.share.data.Error;
 
-public class UploadTask extends AsyncTask<String, Integer, String> implements Progress
+public class UploadTask extends AsyncTask<String, Integer, Error> implements Progress
 {
     private BrowserCallback callback;
     private Smb smb;
@@ -18,7 +20,7 @@ public class UploadTask extends AsyncTask<String, Integer, String> implements Pr
     }
 
     @Override
-    protected String doInBackground(String... params)
+    protected Error doInBackground(String... params)
     {
         try
         {
@@ -33,7 +35,7 @@ public class UploadTask extends AsyncTask<String, Integer, String> implements Pr
         catch(Throwable e)
         {
             Log.error(this, e);
-            return e.getMessage();
+            return new Error(Constants.ERROR_UPLOAD, e.getMessage());
         }
         finally
         {
@@ -61,7 +63,7 @@ public class UploadTask extends AsyncTask<String, Integer, String> implements Pr
     }
 
     @Override
-    protected void onPostExecute(String error)
+    protected void onPostExecute(Error error)
     {
         if (error == null)
         {
@@ -69,7 +71,7 @@ public class UploadTask extends AsyncTask<String, Integer, String> implements Pr
         }
         else
         {
-            callback.onError(Constants.ERROR_UPLOAD, error);
+            callback.onError(error);
         }
     }
 }

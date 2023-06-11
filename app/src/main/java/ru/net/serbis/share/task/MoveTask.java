@@ -4,9 +4,9 @@ import android.os.*;
 import jcifs.smb.*;
 import ru.net.serbis.share.*;
 import ru.net.serbis.share.tool.*;
-import jcifs.*;
+import ru.net.serbis.share.data.Error;
 
-public class MoveTask extends AsyncTask<String, Void, String>
+public class MoveTask extends AsyncTask<String, Void, Error>
 {
     private BrowserCallback callback;
     private Smb smb;
@@ -18,12 +18,16 @@ public class MoveTask extends AsyncTask<String, Void, String>
     }
 
     @Override
-    protected String doInBackground(String... params)
+    protected Error doInBackground(String... params)
     {
         try
         {
             String path = params[0];
             SmbFile source = smb.getFile(path);
+            if (!source.isFile() || !source.exists())
+            {
+                return new Error(smb, Constants.ERROR_FILE_IS_NOT_FOUND, R.string.error_file_is_not_found);
+            }
             String selectPath = params[1];
             SmbFile target = smb.getFile(selectPath + source.getName());
             source.copyTo(target);
@@ -33,12 +37,12 @@ public class MoveTask extends AsyncTask<String, Void, String>
         catch (Throwable e)
         {
             Log.error(this, e);
-            return e.getMessage();
+            return new Error(Constants.ERROR_MOVE, e.getMessage());
         }
     }
 
     @Override
-    protected void onPostExecute(String error)
+    protected void onPostExecute(Error error)
     {
         if (error == null)
         {
@@ -46,7 +50,7 @@ public class MoveTask extends AsyncTask<String, Void, String>
         }
         else
         {
-            callback.onError(Constants.ERROR_MOVE, error);
+            callback.onError(error);
         }
     }
 }

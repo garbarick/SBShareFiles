@@ -6,6 +6,9 @@ import android.os.*;
 import android.view.*;
 import android.widget.*;
 import ru.net.serbis.share.*;
+import ru.net.serbis.share.data.*;
+
+import ru.net.serbis.share.data.Error;
 
 public class UITool
 {
@@ -65,7 +68,11 @@ public class UITool
     {
         toast(context, code + ": " + text);
     }
-    
+
+    public static void toast(Context context, Error error)
+    {
+        toast(context, error.getCode(), error.getMessage());
+    }
     public static void toastNotImpl(Context context)
     {
         toast(context, Constants.ERROR_NOT_IMPLEMENTED, "not implemented");
