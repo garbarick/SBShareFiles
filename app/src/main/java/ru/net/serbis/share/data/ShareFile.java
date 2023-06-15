@@ -116,22 +116,27 @@ public class ShareFile
 
     public Pair<Integer, Integer> getNumChild()
     {
-        Pair<Integer, Integer> result = new Pair<Integer, Integer>();
+        final Pair<Integer, Integer> result = new Pair<Integer, Integer>();
         result.left = 0;
         result.right = 0;
         try
         {
-            for (SmbFile child : file.listFiles())
-            {
-                if (child.isDirectory())
+            file.listFiles(new SmbFileFilter()
                 {
-                    result.left ++;
-                }
-                else
-                {
-                    result.right ++;
-                }
-            }
+                    @Override
+                    public boolean accept(SmbFile child) throws SmbException
+                    {
+                        if (child.isDirectory())
+                        {
+                            result.left ++;
+                        }
+                        else
+                        {
+                            result.right ++;
+                        }
+                        return false;
+                    }
+            });
         }
         catch (Throwable e)
         {

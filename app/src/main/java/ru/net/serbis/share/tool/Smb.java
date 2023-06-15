@@ -84,7 +84,14 @@ public class Smb
     public void check() throws Exception
     {
         SmbFile dir = getRoot();
-        dir.listFiles();
+        dir.listFiles(new SmbFileFilter()
+            {
+                @Override
+                public boolean accept(SmbFile child)
+                {
+                    return false;
+                }
+        });
     }
 
     public CIFSContext getAuth() throws Exception
