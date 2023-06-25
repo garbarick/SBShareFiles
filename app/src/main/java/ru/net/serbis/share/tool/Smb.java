@@ -83,15 +83,23 @@ public class Smb
 
     public void check() throws Exception
     {
-        SmbFile dir = getRoot();
-        dir.listFiles(new SmbFileFilter()
-            {
-                @Override
-                public boolean accept(SmbFile child)
+        SmbFile dir = null;
+        try
+        {
+            dir = getRoot();
+            dir.listFiles(new SmbFileFilter()
                 {
-                    return false;
-                }
-        });
+                    @Override
+                    public boolean accept(SmbFile child)
+                    {
+                        return false;
+                    }
+                });
+        }
+        finally
+        {
+            close(dir);
+        }
     }
 
     public CIFSContext getAuth() throws Exception
@@ -102,5 +110,13 @@ public class Smb
         Configuration config = new PropertyConfiguration(prop);
         BaseContext baseCxt = new BaseContext(config);
         return baseCxt.withCredentials(new NtlmPasswordAuthenticator(host, user, pass));
+    }
+
+    public void close(SmbFile file)
+    {
+        if (file != null)
+        {
+            file.close();
+        }
     }
 }

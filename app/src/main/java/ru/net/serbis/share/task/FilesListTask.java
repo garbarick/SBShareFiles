@@ -25,11 +25,12 @@ public class FilesListTask extends AsyncTask<String, Integer, File>
     @Override
     protected File doInBackground(String... params)
     {
+        SmbFile dir = null;
         try
         {
             publishProgress(0);
             String path = params[0];
-            SmbFile dir = smb.getFile(path);
+            dir = smb.getFile(path);
             File outputDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File file = File.createTempFile("files_list_", ".txt", outputDir);
             generateFilesList(dir, file);
@@ -43,6 +44,7 @@ public class FilesListTask extends AsyncTask<String, Integer, File>
         }
         finally
         {
+            smb.close(dir);
             publishProgress(0);
         }
     }
@@ -106,6 +108,7 @@ public class FilesListTask extends AsyncTask<String, Integer, File>
                 files ++;
                 publishProgress(UITool.getPercent(allFiles, files));
             }
+            child.close();
         }
 	}
 }

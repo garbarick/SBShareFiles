@@ -22,13 +22,14 @@ public class UploadTask extends AsyncTask<String, Integer, Error> implements Pro
     @Override
     protected Error doInBackground(String... params)
     {
+        SmbFile target = null;
         try
         {
             publishProgress(0);
             String path = params[0];
             String targetDir = params[1];
             File source = new File(path);
-            SmbFile target = smb.getFile(targetDir + source.getName());
+            target = smb.getFile(targetDir + source.getName());
             download(source, target);
             return null;
         }
@@ -39,6 +40,7 @@ public class UploadTask extends AsyncTask<String, Integer, Error> implements Pro
         }
         finally
         {
+            smb.close(target);
             publishProgress(0);
         }
     }

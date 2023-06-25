@@ -23,12 +23,13 @@ public class DownloadTask extends AsyncTask<String, Integer, File> implements Pr
     @Override
     protected File doInBackground(String... params)
     {
+        SmbFile source = null;
         try
         {
             publishProgress(0);
             String path = params[0];
             String targetDir = params[1];
-            SmbFile source = smb.getFile(path);
+            source = smb.getFile(path);
 
             if (!source.isFile() || !source.exists())
             {
@@ -48,6 +49,7 @@ public class DownloadTask extends AsyncTask<String, Integer, File> implements Pr
         }
         finally
         {
+            smb.close(source);
             publishProgress(0);
         }
     }

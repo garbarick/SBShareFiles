@@ -134,6 +134,7 @@ public class ShareFile
                         {
                             result.right ++;
                         }
+                        child.close();
                         return false;
                     }
             });

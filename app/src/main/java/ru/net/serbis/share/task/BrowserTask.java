@@ -24,11 +24,12 @@ public class BrowserTask extends AsyncTask<String, Integer, List<ShareFile>>
     @Override
     protected List<ShareFile> doInBackground(String... params)
     {
+        SmbFile file = null;
         try
         {
             publishProgress(0);
             String path = params[0];
-            SmbFile file = path == null ? smb.getRoot() : smb.getFile(path);
+            file = path == null ? smb.getRoot() : smb.getFile(path);
             dir = smb.getShareFile(file);
             return getChildren(file);
         }
@@ -40,6 +41,7 @@ public class BrowserTask extends AsyncTask<String, Integer, List<ShareFile>>
         }
         finally
         {
+            smb.close(file);
             publishProgress(0);
         }
     }
@@ -78,6 +80,7 @@ public class BrowserTask extends AsyncTask<String, Integer, List<ShareFile>>
                     result.add(smb.getShareViewFile(child));
                     iter += step;
                     publishProgress(iter);
+                    child.close();
                 }
                 Collections.sort(result, new ShareComparator());
                 return result;

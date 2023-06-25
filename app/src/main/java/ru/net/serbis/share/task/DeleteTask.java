@@ -20,10 +20,11 @@ public class DeleteTask extends AsyncTask<String, Void, Error>
     @Override
     protected Error doInBackground(String... params)
     {
+        SmbFile source = null;
         try
         {
             String path = params[0];
-            SmbFile source = smb.getFile(path);
+            source = smb.getFile(path);
 
             if (!source.isFile() || !source.exists())
             {
@@ -37,6 +38,10 @@ public class DeleteTask extends AsyncTask<String, Void, Error>
         {
             Log.error(this, e);
             return new Error(Constants.ERROR_DELETE, e.getMessage());
+        }
+        finally
+        {
+            smb.close(source);
         }
     }
 

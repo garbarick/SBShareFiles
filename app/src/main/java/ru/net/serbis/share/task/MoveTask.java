@@ -20,16 +20,18 @@ public class MoveTask extends AsyncTask<String, Void, Error>
     @Override
     protected Error doInBackground(String... params)
     {
+        SmbFile source = null;
+        SmbFile target = null;
         try
         {
             String path = params[0];
-            SmbFile source = smb.getFile(path);
+            source = smb.getFile(path);
             if (!source.isFile() || !source.exists())
             {
                 return new Error(smb, Constants.ERROR_FILE_IS_NOT_FOUND, R.string.error_file_is_not_found);
             }
             String selectPath = params[1];
-            SmbFile target = smb.getFile(selectPath + source.getName());
+            target = smb.getFile(selectPath + source.getName());
             source.copyTo(target);
             source.delete();
             return null;
@@ -38,6 +40,11 @@ public class MoveTask extends AsyncTask<String, Void, Error>
         {
             Log.error(this, e);
             return new Error(Constants.ERROR_MOVE, e.getMessage());
+        }
+        finally
+        {
+            smb.close(source);
+            smb.close(target);
         }
     }
 
