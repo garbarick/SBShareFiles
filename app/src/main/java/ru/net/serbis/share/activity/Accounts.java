@@ -273,7 +273,15 @@ public class Accounts extends ListActivity<Account> implements OnAccountsUpdateL
                 @Override
                 public void handleMessage(Message msg)
                 {
-                    UITool.toast(Accounts.this, msg.getData().getString(responseKey));
+                    if (msg.getData().containsKey(Constants.PROGRESS))
+                    {
+                        int progress = Integer.valueOf(msg.getData().getString(Constants.PROGRESS));
+                        progress(progress);
+                    }
+                    else if (msg.getData().containsKey(responseKey))
+                    {
+                        UITool.toast(Accounts.this, msg.getData().getString(responseKey));
+                    }
                 }
             }
         );
@@ -326,4 +334,10 @@ public class Accounts extends ListActivity<Account> implements OnAccountsUpdateL
             null,
             Constants.RESULT);
     }
+
+    private void progress(int progress)
+    {
+        ProgressBar bar = UITool.findView(this, R.id.progress);
+        bar.setProgress(progress);
+	}
 }

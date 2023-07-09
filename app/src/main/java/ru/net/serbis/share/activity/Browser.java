@@ -225,10 +225,10 @@ public class Browser extends ListActivity<ShareFile> implements BrowserCallback
 	}
 
 	@Override
-	public void progress(int persent)
+	public void progress(int progress)
 	{
 		ProgressBar bar = UITool.findView(this, R.id.progress);
-		bar.setProgress(persent);
+		bar.setProgress(progress);
 	}
 
     private void startUpload()

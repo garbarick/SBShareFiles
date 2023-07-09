@@ -123,8 +123,9 @@ public class Action implements LoginCallback, BrowserCallback
     }
 
 	@Override
-	public void progress(int persent)
+	public void progress(int progress)
 	{
+        sendResult(Constants.PROGRESS, String.valueOf(progress));
 	}
 
 	@Override

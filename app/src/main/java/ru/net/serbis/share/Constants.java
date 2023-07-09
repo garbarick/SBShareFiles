@@ -17,6 +17,7 @@ public interface Constants
     String ERROR = TYPE + ".ERROR";
     String ERROR_CODE = TYPE + ".ERROR_CODE";
     String RESULT = TYPE + ".RESULT";
+    String PROGRESS = TYPE + ".PROGRESS";
 
     String SBSHARE = "sbshare";
     String SUCCESS = "SUCCESS";
