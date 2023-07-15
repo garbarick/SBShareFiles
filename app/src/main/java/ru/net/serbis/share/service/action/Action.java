@@ -125,7 +125,9 @@ public class Action implements LoginCallback, BrowserCallback
 	@Override
 	public void progress(int progress)
 	{
-        sendResult(Constants.PROGRESS, String.valueOf(progress));
+        Bundle data = new Bundle();
+        data.putInt(Constants.PROGRESS, progress);
+        sendResult(data);
 	}
 
 	@Override
