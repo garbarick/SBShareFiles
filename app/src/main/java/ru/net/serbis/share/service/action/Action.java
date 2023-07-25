@@ -56,7 +56,7 @@ public class Action implements LoginCallback, BrowserCallback
 		}
 		AccountManager manager = AccountManager.get(context);
         String pass = manager.getPassword(new ShareAccount(name));
-        new LoginTask(this).execute(name, pass);
+        new LoginTask(this, context).execute(name, pass);
 		
 	}
     

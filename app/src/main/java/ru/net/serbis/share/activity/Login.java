@@ -77,7 +77,7 @@ public class Login extends AccountAuthenticatorActivity implements LoginCallback
     private void login(String name, String pass)
     {
         UITool.hide(this, R.id.login_form);
-        new LoginTask(this).execute(name, pass);
+        new LoginTask(this, this).execute(name, pass);
     }
 
     @Override
