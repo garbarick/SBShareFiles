@@ -174,7 +174,8 @@ public class Browser extends ListActivity<ShareFile> implements BrowserCallback
         UITool.disable(this, R.id.list);
         new DownloadTask(this, smb).execute(
             file.getPath(),
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(),
+            null);
     }
 
 	@Override
@@ -301,7 +302,7 @@ public class Browser extends ListActivity<ShareFile> implements BrowserCallback
 
                     case Constants.ACTION_UPLOAD:
                         UITool.disable(this, R.id.list);
-                        new UploadTask(this, smb).execute(params.selectPath, dir.getPath());
+                        new UploadTask(this, smb).execute(params.selectPath, dir.getPath(), null);
                         break;
                 }
 			}

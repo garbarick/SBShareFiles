@@ -29,6 +29,7 @@ public class DownloadTask extends AsyncTask<String, Integer, File> implements Pr
             publishProgress(0);
             String path = params[0];
             String targetDir = params[1];
+            int bufferSize = StringTool.get().getInt(params[2], Constants.DEFAULT_BUFFER_SIZE);
             source = smb.getFile(path);
 
             if (!source.isFile() || !source.exists())
@@ -38,7 +39,7 @@ public class DownloadTask extends AsyncTask<String, Integer, File> implements Pr
             }
 
             File target = new File(targetDir, source.getName());
-            download(source, target);
+            download(source, target, bufferSize);
             return target;
         }
         catch(Throwable e)
@@ -54,11 +55,11 @@ public class DownloadTask extends AsyncTask<String, Integer, File> implements Pr
         }
     }
 
-    private void download(SmbFile source, File target) throws Exception
+    private void download(SmbFile source, File target, int bufferSize) throws Exception
     {
         InputStream in = source.getInputStream();
         OutputStream out = new FileOutputStream(target);
-        IOTool.copy(in, out, this, source.getContentLengthLong());
+        IOTool.copy(in, out, this, bufferSize, source.getContentLengthLong());
     }
 
     @Override

@@ -9,17 +9,19 @@ import ru.net.serbis.share.tool.*;
 public class UploadFile extends Action
 {
     private String file;
+    private String bufferSize;
 
     public UploadFile(Context context, Message msg)
     {
         super(context, msg);
         this.file = msg.getData().getString(Constants.FILE);
+        this.bufferSize = msg.getData().getString(Constants.BUFFER_SIZE);
     }
 
     @Override
     public void onLogin(Smb smb)
     {
-        new UploadTask(this, smb).execute(file, path);
+        new UploadTask(this, smb).execute(file, path, bufferSize);
     }
 
     @Override

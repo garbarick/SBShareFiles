@@ -18,11 +18,11 @@ public class IOTool
         {}
     }
 
-    public static void copy(InputStream is, OutputStream os, Progress progress, long size) throws Exception
+    public static void copy(InputStream is, OutputStream os, Progress progress, int bufferSize, long size) throws Exception
     {
         try
         {
-            byte[] buf = new byte[10240];
+            byte[] buf = new byte[bufferSize];
             long bytes = 0;
             int len;
             while ((len = is.read(buf)) > 0)

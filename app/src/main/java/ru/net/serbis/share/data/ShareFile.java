@@ -21,7 +21,7 @@ public class ShareFile
     {
         this.root = root;
         this.file = file;
-        name = StringTool.trimRight(file.getName(), '/');
+        name = StringTool.get().trimRight(file.getName(), '/');
         dir = file.isDirectory();
     }
 

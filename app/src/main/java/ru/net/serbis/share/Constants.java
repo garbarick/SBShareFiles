@@ -18,6 +18,8 @@ public interface Constants
     String ERROR_CODE = TYPE + ".ERROR_CODE";
     String RESULT = TYPE + ".RESULT";
     String PROGRESS = TYPE + ".PROGRESS";
+    String BUFFER_SIZE = TYPE + ".BUFFER_SIZE";
+    int DEFAULT_BUFFER_SIZE = 10240;
 
     String SBSHARE = "sbshare";
     String SUCCESS = "SUCCESS";

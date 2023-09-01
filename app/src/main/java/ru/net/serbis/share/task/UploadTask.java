@@ -28,9 +28,10 @@ public class UploadTask extends AsyncTask<String, Integer, Error> implements Pro
             publishProgress(0);
             String path = params[0];
             String targetDir = params[1];
+            int bufferSize = StringTool.get().getInt(params[2], Constants.DEFAULT_BUFFER_SIZE);
             File source = new File(path);
             target = smb.getFile(targetDir + source.getName());
-            download(source, target);
+            download(source, target, bufferSize);
             return null;
         }
         catch(Throwable e)
@@ -45,11 +46,11 @@ public class UploadTask extends AsyncTask<String, Integer, Error> implements Pro
         }
     }
 
-    private void download(File source, SmbFile target) throws Exception
+    private void download(File source, SmbFile target, int bufferSize) throws Exception
     {
         InputStream in = new FileInputStream(source);
         OutputStream out = target.getOutputStream();
-        IOTool.copy(in, out, this, source.length());
+        IOTool.copy(in, out, this, bufferSize, source.length());
     }
 
     @Override

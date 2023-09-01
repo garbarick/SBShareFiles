@@ -9,9 +9,12 @@ import ru.net.serbis.share.tool.*;
 
 public class GetFile extends Action
 {
+    private String bufferSize;
+
 	public GetFile(Context context, Message msg)
 	{
 		super(context, msg);
+        this.bufferSize = msg.getData().getString(Constants.BUFFER_SIZE);
 	}
 
     @Override
@@ -19,7 +22,8 @@ public class GetFile extends Action
     {
         new DownloadTask(this, smb).execute(
             path,
-            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath());
+            Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(),
+            bufferSize);
     }
 
 	@Override
