@@ -26,6 +26,10 @@ public class StringTool
     {
         try
         {
+            if (value == null || value.isEmpty())
+            {
+                return defaultavalue;
+            }
             return Integer.valueOf(value);
         }
         catch (Exception e)
