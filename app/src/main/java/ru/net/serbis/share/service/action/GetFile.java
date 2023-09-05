@@ -20,7 +20,7 @@ public class GetFile extends Action
     @Override
     public void onLogin(Smb smb)
     {
-        new DownloadTask(this, smb).execute(
+        new DownloadTask(context, this, smb).execute(
             path,
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(),
             bufferSize);

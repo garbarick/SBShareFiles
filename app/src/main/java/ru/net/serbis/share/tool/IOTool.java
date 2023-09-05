@@ -38,4 +38,15 @@ public class IOTool
             close(os);
         }
     }
+
+    public static void sleep(long m)
+    {
+        try
+        {
+            Thread.currentThread().sleep(m);
+        }
+        catch (InterruptedException e)
+        {
+        }
+    }
 }

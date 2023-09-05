@@ -17,7 +17,7 @@ public class GetFilesList extends Action
     @Override
     public void onLogin(Smb smb)
     {
-        new FilesListTask(this, smb).execute(path);
+        new FilesListTask(context, this, smb).execute(path);
 	}
 
     @Override

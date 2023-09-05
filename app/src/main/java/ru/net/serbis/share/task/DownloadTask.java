@@ -1,21 +1,22 @@
 package ru.net.serbis.share.task;
 
-import android.os.*;
+import android.content.*;
 import java.io.*;
 import jcifs.smb.*;
 import ru.net.serbis.share.*;
 import ru.net.serbis.share.data.*;
 import ru.net.serbis.share.tool.*;
+
 import ru.net.serbis.share.data.Error;
 
-public class DownloadTask extends AsyncTask<String, Integer, File> implements Progress
+public class DownloadTask extends WaitTask<String, File> implements Progress
 {
     private BrowserCallback callback;
     private Smb smb;
-    private Error error;
 
-    public DownloadTask(BrowserCallback callback, Smb smb)
+    public DownloadTask(Context context, BrowserCallback callback, Smb smb)
     {
+        super(context);
         this.callback = callback;
         this.smb = smb;
     }
@@ -42,7 +43,11 @@ public class DownloadTask extends AsyncTask<String, Integer, File> implements Pr
             download(source, target, bufferSize);
             return target;
         }
-        catch(Throwable e)
+        catch (SmbException e)
+        {
+            return waiting(e, params);
+        }
+        catch (Throwable e)
         {
             Log.error(this, e);
             error = new Error(Constants.ERROR_DOWNLOAD, e.getMessage());

@@ -1,22 +1,23 @@
 package ru.net.serbis.share.task;
 
-import android.os.*;
+import android.content.*;
 import java.util.*;
 import jcifs.smb.*;
 import ru.net.serbis.share.*;
-import ru.net.serbis.share.tool.*;
 import ru.net.serbis.share.data.*;
+import ru.net.serbis.share.tool.*;
+
 import ru.net.serbis.share.data.Error;
 
-public class BrowserTask extends AsyncTask<String, Integer, List<ShareFile>>
+public class BrowserTask extends WaitTask<String, List<ShareFile>>
 {
     private BrowserCallback callback;
     private Smb smb;
     private ShareFile dir;
-    private Error error;
 
-    public BrowserTask(BrowserCallback callback, Smb smb)
+    public BrowserTask(Context context, BrowserCallback callback, Smb smb)
     {
+        super(context);
         this.callback = callback;
         this.smb = smb;
     }
@@ -33,7 +34,11 @@ public class BrowserTask extends AsyncTask<String, Integer, List<ShareFile>>
             dir = smb.getShareFile(file);
             return getChildren(file);
         }
-        catch(Throwable e)
+        catch (SmbException e)
+        {
+            return waiting(e, params);
+        }
+        catch (Throwable e)
         {
             Log.error(this, e);
             error = new Error(Constants.ERROR_BROWSE, e.getMessage());

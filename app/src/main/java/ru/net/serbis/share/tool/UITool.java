@@ -83,4 +83,11 @@ public class UITool
         Double percent = 100.0 / max * cur;
         return percent.intValue();
     }
+
+    public static void toastWait(Context context)
+    {
+        toast(
+          context,
+          context.getResources().getString(R.string.waiting));
+    }
 }

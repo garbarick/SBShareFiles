@@ -1,45 +1,53 @@
 package ru.net.serbis.share.task;
 
 import android.content.*;
-import android.os.*;
+import jcifs.smb.*;
 import ru.net.serbis.share.*;
 import ru.net.serbis.share.data.*;
 import ru.net.serbis.share.tool.*;
 
 import ru.net.serbis.share.data.Error;
 
-public class LoginTask extends AsyncTask<String, Void, Error>
+public class LoginTask extends WaitTask<String, Void>
 {
     private LoginCallback callback;
-    private Context context;
+    private Smb smb;
 
-    public LoginTask(LoginCallback callback, Context context)
+    public LoginTask(Context context, LoginCallback callback)
     {
+        super(context);
         this.callback = callback;
-        this.context = context;
     }
     
     @Override
-    protected Error doInBackground(String... params)
+    protected Void doInBackground(String... params)
     {
         try
         {
-            Smb smb = new Smb(context, params[0], params[1]);
+            smb = new Smb(context, params[0], params[1]);
             smb.check();
-            callback.onLogin(smb);
             return null;
+        }
+        catch (SmbException e)
+        {
+            return waiting(e, params);
         }
         catch (Throwable e)
         {
             Log.error(this, e);
-            return new Error(Constants.ERROR_LOGIN, e.getMessage());
+            error = new Error(Constants.ERROR_LOGIN, e.getMessage());
+            return null;
         }
     }
 
     @Override
-    protected void onPostExecute(Error error)
+    protected void onPostExecute(Void result)
     {
-        if (error != null)
+        if (error == null)
+        {
+            callback.onLogin(smb);
+        }
+        else
         {
             callback.onError(error);
         }

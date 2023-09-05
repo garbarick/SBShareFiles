@@ -21,7 +21,7 @@ public class UploadFile extends Action
     @Override
     public void onLogin(Smb smb)
     {
-        new UploadTask(this, smb).execute(file, path, bufferSize);
+        new UploadTask(context, this, smb).execute(file, path, bufferSize);
     }
 
     @Override

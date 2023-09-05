@@ -89,7 +89,7 @@ public class Browser extends ListActivity<ShareFile> implements BrowserCallback
     private void initList()
     {
         UITool.disable(this, R.id.list);
-        new BrowserTask(this, smb).execute(path);
+        new BrowserTask(this, this, smb).execute(path);
     }
 
     @Override
@@ -126,6 +126,10 @@ public class Browser extends ListActivity<ShareFile> implements BrowserCallback
 	@Override
 	public void onBackPressed()
 	{
+        if (dir == null)
+        {
+            return;
+        }
         path = dir.getParent();
         if (path == null)
         {
@@ -172,7 +176,7 @@ public class Browser extends ListActivity<ShareFile> implements BrowserCallback
     private void startDownload(ShareFile file)
     {
         UITool.disable(this, R.id.list);
-        new DownloadTask(this, smb).execute(
+        new DownloadTask(this, this, smb).execute(
             file.getPath(),
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS).getAbsolutePath(),
             null);
@@ -249,7 +253,7 @@ public class Browser extends ListActivity<ShareFile> implements BrowserCallback
     private void getFilesList()
     {
         UITool.disable(this, R.id.list);
-        new FilesListTask(this, smb).execute(dir.getPath());
+        new FilesListTask(this, this, smb).execute(dir.getPath());
     }
 
     @Override
@@ -302,7 +306,7 @@ public class Browser extends ListActivity<ShareFile> implements BrowserCallback
 
                     case Constants.ACTION_UPLOAD:
                         UITool.disable(this, R.id.list);
-                        new UploadTask(this, smb).execute(params.selectPath, dir.getPath(), null);
+                        new UploadTask(this, this, smb).execute(params.selectPath, dir.getPath(), null);
                         break;
                 }
 			}

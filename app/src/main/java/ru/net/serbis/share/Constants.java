@@ -47,4 +47,5 @@ public interface Constants
     int ERROR_LOGIN = 407;
     int ERROR_NOT_IMPLEMENTED = 408;
     int ERROR_FILES_LIST = 409;
+    int ERROR_TOO_MANY_CONNECTIONS = -1073741616;
 }
